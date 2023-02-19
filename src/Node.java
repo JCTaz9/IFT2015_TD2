@@ -91,11 +91,57 @@ public class Node {
 
     }
 
-    public void addValue_ordered(int value){
-        // TODO
+    public void addValue_ordered(int value) {
+        Node newNode = new Node(value);
+
+        if (this.next == null) {
+
+            this.next = newNode;
+        } else {
+            addValue_orderedHelp(newNode, this);
+        }
     }
 
-    public void insertSort(){
-        // TODO
+    private void addValue_orderedHelp(Node newNode, Node current) {
+        if (current.next == null || current.next.value >= newNode.value) {
+            newNode.next = current.next;
+            current.next = newNode;
+        } else {
+            addValue_orderedHelp(newNode, current.next);
+        }
     }
+
+
+    public void insertSort() {
+        if (this.next == null) {
+
+            return;
+        }
+
+        Node sortedList = this.next;
+        Node unsortedList = sortedList.next;
+        sortedList.next = null;
+
+        while (unsortedList != null) {
+            Node current = unsortedList;
+            unsortedList = unsortedList.next;
+
+            if (current.value < sortedList.value) {
+
+                current.next = sortedList;
+                sortedList = current;
+            } else {
+
+                Node temp = sortedList;
+                while (temp.next != null && temp.next.value < current.value) {
+                    temp = temp.next;
+                }
+                current.next = temp.next;
+                temp.next = current;
+            }
+        }
+
+        this.next = sortedList;
+    }
+
 }
